@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matrix Diplomas</title>
+
+<style>
+body {
+  margin: 0;
+  background: black;
+  color: #00ff88;
+  font-family: monospace;
+  text-align: center;
+}
+
+/* Fondo Matrix */
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+/* Botones */
+button {
+  background: transparent;
+  border: 2px solid #00ff88;
+  color: #00ff88;
+  padding: 15px;
+  margin: 10px;
+  width: 80%;
+  font-size: 18px;
+  border-radius: 10px;
+}
+
+button:hover {
+  background: #00ff88;
+  color: black;
+}
+
+.container {
+  margin-top: 100px;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="matrix"></canvas>
+
+<div class="container">
+  <h1>🟢 MATRIX DIPLOMAS</h1>
+  
+  <button onclick="mostrarCatalogo()">INICIAR PEDIDO</button>
+  
+  <div id="catalogo" style="display:none;">
+    <h2>Selecciona producto</h2>
+    <button onclick="pedir('Diploma')">Diploma</button>
+    <button onclick="pedir('Cuadro')">Cuadro</button>
+    <button onclick="pedir('Recuerdo')">Recuerdo</button>
+  </div>
+</div>
+
+<script>
+// Mostrar catálogo
+function mostrarCatalogo() {
+  document.getElementById("catalogo").style.display = "block";
+}
+
+// Pedido WhatsApp
+function pedir(producto) {
+  let mensaje = "Hola, quiero pedir un " + producto;
+  window.open("https://wa.me/51940265054?text=" + encodeURIComponent(mensaje));
+}
+
+// Animación Matrix
+const canvas = document.getElementById("matrix");
+const ctx = canvas.getContext("2d");
+
+canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;
+
+let letters = "01";
+letters = letters.split("");
+
+let fontSize = 14;
+let columns = canvas.width / fontSize;
+
+let drops = [];
+for (let x = 0; x < columns; x++)
+  drops[x] = 1;
+
+function draw() {
+  ctx.fillStyle = "rgba(0,0,0,0.05)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  ctx.fillStyle = "#00ff88";
+  ctx.font = fontSize + "px monospace";
+
+  for (let i = 0; i < drops.length; i++) {
+    let text = letters[Math.floor(Math.random()*letters.length)];
+    ctx.fillText(text, i*fontSize, drops[i]*fontSize);
+
+    if (drops[i]*fontSize > canvas.height && Math.random() > 0.975)
+      drops[i] = 0;
+
+    drops[i]++;
+  }
+}
+
+setInterval(draw, 33);
+</script>
+
+</body>
+</html>
